@@ -17,6 +17,7 @@
 package com.app.kfe.wifi;
 
 import com.app.kfe.R;
+import com.app.kfe.rysowanie.Tablica;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,19 +36,19 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
 
     private WifiP2pManager manager;
     private Channel channel;
-    private WiFiDirectActivity activity;
+    private Tablica activity;
 
     /**
      * @param manager WifiP2pManager system service
      * @param channel Wifi p2p channel
-     * @param activity activity associated with the receiver
+     * @param wiFiDirectActivity activity associated with the receiver
      */
     public WiFiDirectBroadcastReceiver(WifiP2pManager manager, Channel channel,
-            WiFiDirectActivity activity) {
+            Tablica tablica) {
         super();
         this.manager = manager;
         this.channel = channel;
-        this.activity = activity;
+        this.activity = tablica;
     }
 
     /*
