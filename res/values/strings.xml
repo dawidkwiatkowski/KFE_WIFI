@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="app_name">KFE</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="draw_btn">Rysuj</string>
+    <string name="dolacz_btn">Dołącz do gry</string>
+    <string name="title_activity_tablica">Tablica</string>
+    <string name="title_activity_tablica2">Tablica2</string>
+    <string name="draw2_btn">Rysuj 2</string>
+    <string name="brashSizeLabel">Rozmiar pędzla</string>
+    <string name="colorsLabel">Kolor pędzla</string>
+    <string name="edittext_hint_Gracz">Nazwa Gracza</string>
+    <string name="button_save">Zapisz</string>
+    <string name="setting_btn">Ustwienia</string>
+      <string name="score_btn">Statystyki</string>
+      <string name="title_activity_setting">Ustawienia</string>
+     <string name="title_activity_score">Statystyki</string>
+       <string name="title_stat_activity">Statystki Rozgrywki</string>
+     
+
+    <color name="grayColor">#808080</color>
+    <color name="redColor">#FF0000</color>
+    <color name="yellowColor">#FFFF00</color>
+    <color name="greenColor">#00FF00</color>
+    <color name="blueColor">#0000FF</color>
+    <color name="whiteColor">#FFFFFF</color>
+    <color name="blackColor">#000000</color>
+
+    <string name="title_activity_dolacz">Dołącz</string>
+
+    <string name="btn_exit">Wyjście</string>
+
+    <string name="Dzwiek">Włączyć efekty dzwiękowe</string>
+
+     <!-- Bluetooth -->
+    <string name="title_activity_device_list">DeviceListActivity</string>
+    
+    <string name="send">Send</string>
+    <string name="not_connected">You are not connected to a device</string>
+    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Chat.</string>
+    <string name="title_connecting">connecting...</string>
+    <string name="title_connected_to">connected to <xliff:g id="device_name">%1$s</xliff:g></string>
+    <string name="title_not_connected">not connected</string>
+
+    <!-- DeviceListActivity -->
+    <string name="scanning">scanning for devices...</string>
+    <string name="select_device">select a device to connect</string>
+    <string name="none_paired">No devices have been paired</string>
+    <string name="none_found">No devices found</string>
+    <string name="title_paired_devices">Paired Devices</string>
+    <string name="title_other_devices">Other Available Devices</string>
+    <string name="button_scan">Scan for devices</string>
+
+    <!-- Options Menu -->
+    <string name="secure_connect">Connect a device - Secure</string>
+    <string name="insecure_connect">Connect a device - Insecure</string>
+    <string name="discoverable">Make discoverable</string>
+
+    <!-- Wifi-direct -->
+
+    <string name="enable_p2p_button">P2P On/Off</string>
+    <string name="discover_peers_button">Discover</string>
+    <string name="connect_peer_button">Connect</string>
+    <string name="disconnect_peer_button">Disconnect</string>
+    <string name="get_file_button">Launch Gallery</string>
+    <string name="empty"></string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="client_text">This device will act as a client. Click on Gallery button to pick a local(stored) file</string>
+    <string name="empty_message">No devices found. Turn on P2P and perform discovery from the Action Bar</string>
+    <string name="p2p_off_warning">Enable P2P from action bar button above or system settings</string>
+    <string name="group_owner_text">"Am I the Group Owner? "</string>
+    <string name="label_me">ME</string>
+    <string name="label_peers">PEERS</string>
+    <string name="title_activity_wifi_act">Wifi_act</string>
+    
+</resources>
