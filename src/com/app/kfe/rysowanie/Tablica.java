@@ -56,7 +56,10 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 		setContentView(R.layout.activity_tablica);
 		
 		SlidingDrawer toolsPanel = (SlidingDrawer) findViewById(R.id.toolsPanel);
-		final ImageButton handle = (ImageButton) findViewById(R.id.handle);				
+		final ImageButton handle = (ImageButton) findViewById(R.id.handle);		
+		
+		SlidingDrawer connectionPanel = (SlidingDrawer) findViewById(R.id.connctionPanel);
+		final ImageButton handle2 = (ImageButton) findViewById(R.id.handle2);
 		
 		paintView = (PaintView) findViewById(R.id.drawing);
 		drawPaint = paintView.getDrawPaint();
@@ -109,6 +112,22 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
             @Override
             public void onDrawerClosed() {
             	handle.setBackgroundResource(R.drawable.left);
+            	paintView.setIsEnabled(true);
+            }
+        });
+		
+		connectionPanel.setOnDrawerOpenListener(new OnDrawerOpenListener() {
+            @Override
+            public void onDrawerOpened() {
+            	handle2.setBackgroundResource(R.drawable.left);
+            	paintView.setIsEnabled(false);
+            }
+        });
+ 
+		connectionPanel.setOnDrawerCloseListener(new OnDrawerCloseListener() {
+            @Override
+            public void onDrawerClosed() {
+            	handle2.setBackgroundResource(R.drawable.right);
             	paintView.setIsEnabled(true);
             }
         });

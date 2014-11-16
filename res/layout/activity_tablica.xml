@@ -4,13 +4,43 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@color/whiteColor"
-    tools:context="com.app.kfe.Tablica" >
-
-	<com.app.kfe.rysowanie.PaintView
+    tools:context="com.app.kfe.Tablica" >	
+    
+    <com.app.kfe.rysowanie.PaintView
 	    android:id="@+id/drawing"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent" 
 	    android:layout_marginRight="65dp"/>
+    
+    <SlidingDrawer
+        android:id="@+id/connctionPanel"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"        
+        android:content="@+id/content2"
+        android:handle="@+id/handle2"
+        android:orientation="horizontal"
+        android:rotation="180">
+        
+        <LinearLayout
+            android:id="@+id/content2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/kfe_list_selector_background_transition_holo_light"
+            android:orientation="vertical" 
+            android:layout_gravity="start"
+            android:rotation="180">
+
+            
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/handle2"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/right" 
+            android:rotation="180"/>
+    </SlidingDrawer>
     
     <SlidingDrawer
         android:id="@+id/toolsPanel"
