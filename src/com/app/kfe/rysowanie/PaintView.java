@@ -43,6 +43,8 @@ public class PaintView extends View {
 	private float my;
 	
 	private boolean isEnabled;
+	
+	private Tablica tablica;
 
 	public PaintView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -51,6 +53,14 @@ public class PaintView extends View {
 		setupDrawing();
 	}
 	
+	public Tablica getTablica() {
+		return tablica;
+	}
+
+	public void setTablica(Tablica tablica) {
+		this.tablica = tablica;
+	}
+
 	public void setDrawCanvas(Canvas drawCanvas){
 		this.drawCanvas = drawCanvas;
 	}
@@ -140,8 +150,8 @@ public class PaintView extends View {
 				case TRIANGLE:
 					onDrawTriangle(canvas);
 					break;
-				}
 			}
+		}		
 	}
 	
 	@Override

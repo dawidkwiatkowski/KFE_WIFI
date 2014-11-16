@@ -96,6 +96,8 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 		final ImageButton handle2 = (ImageButton) findViewById(R.id.handle2);
 		
 		paintView = (PaintView) findViewById(R.id.drawing);
+		paintView.setTablica(this);
+		
 		drawPaint = paintView.getDrawPaint();
 		canvasPaint = paintView.getCanvasPaint();
 		redButton = (Button) findViewById(R.id.redButton);
