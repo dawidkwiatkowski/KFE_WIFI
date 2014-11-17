@@ -28,6 +28,7 @@ import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -66,6 +67,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	private AlertDialog.Builder newImageDialog;
 	private int brushColor;	
 	
+	public static Tablica tablica = null;
 	
 	//czêœæ dla WIFI
 	
@@ -87,7 +89,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_tablica);
+		setContentView(R.layout.activity_tablica);			
 		
 		SlidingDrawer toolsPanel = (SlidingDrawer) findViewById(R.id.toolsPanel);
 		final ImageButton handle = (ImageButton) findViewById(R.id.handle);		
@@ -169,7 +171,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
         });
 		
 		saveDialog = new AlertDialog.Builder(this);
-		saveDialog.setTitle("Zapis obraznka");
+		saveDialog.setTitle("Zapis obrazka");
 		saveDialog.setMessage("Czy zapisaæ obrazek do galerii?");
 		saveDialog.setPositiveButton("Tak", new DialogInterface.OnClickListener() {					
 			@Override
@@ -224,6 +226,8 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 			atn_direct_enable.setOnClickListener(this);
 		
 		//koniec czêœci dla wifi
+			
+		tablica = this;
 	}
 
 	@Override
@@ -434,12 +438,16 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	        super.onResume();
 	        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
 	        registerReceiver(receiver, intentFilter);
+	        
+	        tablica = this;
 	    }
 
 	    @Override
 	    public void onPause() {
 	        super.onPause();
 	        unregisterReceiver(receiver);
+	        
+	        tablica = null;
 	    }
 
 	    /**
