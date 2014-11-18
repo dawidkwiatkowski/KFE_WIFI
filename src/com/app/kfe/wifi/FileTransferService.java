@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -144,16 +145,23 @@ public class FileTransferService extends IntentService {
 //          
           pv.setDrawingCacheEnabled(true);
           Bitmap obrazek = pv.getDrawingCache();
+          
+          ByteArrayOutputStream streamOut = new ByteArrayOutputStream();
+          obrazek.compress(Bitmap.CompressFormat.PNG, 100, streamOut);
+  		 byte[] yourBytes = streamOut.toByteArray();
+          
+          
+          
           pv.destroyDrawingCache();
 
-          byte[] yourBytes = null;
-          
-          int bytes = obrazek.getByteCount();
-
-
-			 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
-			 obrazek.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
-			 yourBytes = buffer.array(); //Get the underlying array containing the data.
+//          byte[] yourBytes = null;
+//          
+//          int bytes = obrazek.getByteCount();
+//
+//
+//			 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
+//			 obrazek.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
+//			 yourBytes = buffer.array(); //Get the underlying array containing the data.
 
             
             if( canvas != null)

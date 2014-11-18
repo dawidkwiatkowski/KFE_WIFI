@@ -384,12 +384,9 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 //                copyFile(inputstream, new FileOutputStream(f));
                 
                 Bitmap bm = null;
-                try{
-                bm = BitmapFactory.decodeStream(inputstream);
-                }
-                catch(Exception e){
-                	result = "Bl¹d";
-                }
+                byte[] array = Tablica.convertInputStreamToByteArray(inputstream);
+                
+                bm = BitmapFactory.decodeByteArray(array , 0, array.length);
                 
                 if( bm != null)
                 	result = "byle co";

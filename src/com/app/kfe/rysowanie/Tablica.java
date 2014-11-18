@@ -1,6 +1,7 @@
 package com.app.kfe.rysowanie;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -367,23 +368,23 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	public void saveImage(){
 		paintView.setDrawingCacheEnabled(true);
 		Bitmap stara = paintView.getDrawingCache();
-		int bytes = stara.getByteCount();
-
-
-		 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
-		 stara.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
-		 byte[] yourBytes = buffer.array();
+		
+//		int bytes = stara.getByteCount();
+//
+//
+//		 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
+//		 stara.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		stara.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		 byte[] yourBytes = stream.toByteArray();
+		 
 		 InputStream is = null;
-         byte[] array = null;
+         
         
-         is = new ByteArrayInputStream(yourBytes);
-         try {
-			is.read(array);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Bitmap nowa = BitmapFactory.decodeByteArray(array, 0, array.length);
+        is = new ByteArrayInputStream(yourBytes);
+        byte[] array = convertInputStreamToByteArray(is);
+        
+		Bitmap nowa = BitmapFactory.decodeByteArray(array , 0, array.length);
 		
 		String imgSaved = MediaStore.Images.Media.insertImage(
 				getContentResolver(), nowa,
@@ -394,12 +395,41 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 			saveToast.show();
 		}
 		else{
-		Toast unsavedToast = Toast.makeText(getApplicationContext(), "Wyst¹pi³ problem podczas zapisu", Toast.LENGTH_SHORT);
-		unsavedToast.show();
+			Toast unsavedToast = Toast.makeText(getApplicationContext(), "Wyst¹pi³ problem podczas zapisu", Toast.LENGTH_SHORT);
+			unsavedToast.show();
 		}
 		
 		paintView.destroyDrawingCache();
 	}
+	
+	public static byte[] convertInputStreamToByteArray(InputStream inputStream)
+	 {
+	 byte[] bytes= null;
+	 
+	 try
+	 {
+	 ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	 
+	 byte data[] = new byte[1024];
+	 int count;
+	 
+	 while ((count = inputStream.read(data)) != -1)
+	 {
+	 bos.write(data, 0, count);
+	 }
+	 
+	bos.flush();
+	 bos.close();
+	 inputStream.close();
+	 
+	bytes = bos.toByteArray();
+	 }
+	 catch (IOException e)
+	 {
+	 e.printStackTrace();
+	 }
+	 return bytes;
+	 }
 	
 	public void setColor(){
 		drawPaint.setColor(brushColor);
