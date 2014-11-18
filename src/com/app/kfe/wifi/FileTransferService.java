@@ -6,6 +6,7 @@ import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.util.Log;
@@ -17,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 import com.app.kfe.R;
 import com.app.kfe.rysowanie.PaintView;
@@ -134,15 +136,25 @@ public class FileTransferService extends IntentService {
             int port = intent.getExtras().getInt(EXTRAS_GROUP_OWNER_PORT);
             
 //            byte[] canvasInByte = intent.getExtras().getByteArray(EXTRAS_CANVAS);
-            
+            PaintView pv = ((PaintView) Tablica.tablica.findViewById(R.id.drawing));
             Canvas canvas = null;
             
-            canvas = ((PaintView) Tablica.tablica.findViewById(R.id.drawing)).getDrawCanvas();
-            
-//            if( canvasInByte != null)
-//            	text = "Dostano kanwe";
-//            else
-//            	text = "kanva = null";
+            canvas = pv.getDrawCanvas();
+//         
+//          
+          pv.setDrawingCacheEnabled(true);
+          Bitmap obrazek = pv.getDrawingCache();
+          pv.destroyDrawingCache();
+
+          byte[] yourBytes = null;
+          
+          int bytes = obrazek.getByteCount();
+
+
+			 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
+			 obrazek.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
+			 yourBytes = buffer.array(); //Get the underlying array containing the data.
+
             
             if( canvas != null)
             	text = "Dostano kanwe";
@@ -159,7 +171,7 @@ public class FileTransferService extends IntentService {
 //                ContentResolver cr = context.getContentResolver();
                 InputStream is = null;
                 
-                is = new ByteArrayInputStream(text.getBytes());
+                is = new ByteArrayInputStream(yourBytes);
                 
                 DeviceDetailFragment.copyFile(is, stream);
                 Log.d(WiFiDirectActivity.TAG, "Client: Data written");

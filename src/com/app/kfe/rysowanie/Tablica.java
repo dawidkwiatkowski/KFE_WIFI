@@ -1,5 +1,8 @@
 package com.app.kfe.rysowanie;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.UUID;
 
 import com.app.kfe.R;
@@ -16,6 +19,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -360,9 +365,21 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	
 	public void saveImage(){
 		paintView.setDrawingCacheEnabled(true);
+		Bitmap stara = paintView.getDrawingCache();
+		int bytes = stara.getByteCount();
+
+
+		 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
+		 stara.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
+		 byte[] yourBytes = buffer.array();
+		 InputStream is = null;
+         
+         is = new ByteArrayInputStream(yourBytes);
+		
+		Bitmap nowa = BitmapFactory.decodeStream(is);;
 		
 		String imgSaved = MediaStore.Images.Media.insertImage(
-				getContentResolver(), paintView.getDrawingCache(),
+				getContentResolver(), nowa,
 				UUID.randomUUID().toString()+".png", "drawing");
 		
 		if(imgSaved != null){

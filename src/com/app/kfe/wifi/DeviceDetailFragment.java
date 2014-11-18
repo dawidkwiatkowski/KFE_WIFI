@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.net.wifi.WpsInfo;
@@ -378,8 +379,20 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 //
 //                Log.d(WiFiDirectActivity.TAG, "server: copying files " + f.toString());
                 InputStream inputstream = client.getInputStream();
-                String result = getStringFromInputStream(inputstream);
+//                String result = getStringFromInputStream(inputstream);
+                String result = "Przyjêto dane";
 //                copyFile(inputstream, new FileOutputStream(f));
+                
+                Bitmap bm = null;
+                try{
+                bm = BitmapFactory.decodeStream(inputstream);
+                }
+                catch(Exception e){
+                	result = "Bl¹d";
+                }
+                
+                if( bm != null)
+                	result = "byle co";
                 serverSocket.close();
 //                return f.getAbsolutePath();
                 return result;
