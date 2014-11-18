@@ -1,6 +1,7 @@
 package com.app.kfe.rysowanie;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.UUID;
@@ -373,10 +374,16 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 		 stara.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
 		 byte[] yourBytes = buffer.array();
 		 InputStream is = null;
-         
+         byte[] array = null;
+        
          is = new ByteArrayInputStream(yourBytes);
-		
-		Bitmap nowa = BitmapFactory.decodeStream(is);;
+         try {
+			is.read(array);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Bitmap nowa = BitmapFactory.decodeByteArray(array, 0, array.length);
 		
 		String imgSaved = MediaStore.Images.Media.insertImage(
 				getContentResolver(), nowa,
