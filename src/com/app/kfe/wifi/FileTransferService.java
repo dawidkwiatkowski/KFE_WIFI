@@ -2,6 +2,7 @@
 
 package com.app.kfe.wifi;
 
+import android.R.bool;
 import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -31,7 +32,7 @@ import com.app.kfe.rysowanie.Tablica;
  */
 public class FileTransferService extends IntentService {
 
-    private static final int SOCKET_TIMEOUT = 5000;
+    private static final int SOCKET_TIMEOUT = 10000;
     public static final String EXTRAS_CANVAS = "CANVAS";
     public static final String ACTION_SEND_FILE = "com.app.kfe.Wifi.SEND_FILE";
     public static final String ACTION_SEND_TEXT = "com.app.kfe.Wifi.SEND_TEXT";
@@ -39,7 +40,8 @@ public class FileTransferService extends IntentService {
     public static final String EXTRAS_FILE_PATH = "file_url";
     public static final String EXTRAS_GROUP_OWNER_ADDRESS = "go_host";
     public static final String EXTRAS_GROUP_OWNER_PORT = "go_port";
-
+    static Socket socket;
+    static Boolean czy_tak=false;
     public FileTransferService(String name) {
         super(name);
     }
@@ -133,7 +135,7 @@ public class FileTransferService extends IntentService {
         else if (intent.getAction().equals(ACTION_SEND_CANVAS)) {
         	String text = "Dupa";
             String host = intent.getExtras().getString(EXTRAS_GROUP_OWNER_ADDRESS);
-            Socket socket = new Socket();
+            
             int port = intent.getExtras().getInt(EXTRAS_GROUP_OWNER_PORT);
             
 //            byte[] canvasInByte = intent.getExtras().getByteArray(EXTRAS_CANVAS);
@@ -162,7 +164,10 @@ public class FileTransferService extends IntentService {
 //			 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
 //			 obrazek.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
 //			 yourBytes = buffer.array(); //Get the underlying array containing the data.
-
+          	
+          	     socket = new Socket();
+          	     
+          	
             
             if( canvas != null)
             	text = "Dostano kanwe";
@@ -171,8 +176,12 @@ public class FileTransferService extends IntentService {
 
             try {
                 Log.d(WiFiDirectActivity.TAG, "Opening client socket - ");
-                socket.bind(null);
-                socket.connect((new InetSocketAddress(host, port)), SOCKET_TIMEOUT);
+                if(!socket.isConnected())
+                {
+                	socket.bind(null);
+                	socket.connect((new InetSocketAddress(host, port)),SOCKET_TIMEOUT);
+                }
+               
 
                 Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
                 OutputStream stream = socket.getOutputStream();
@@ -185,7 +194,8 @@ public class FileTransferService extends IntentService {
                 Log.d(WiFiDirectActivity.TAG, "Client: Data written");
             } catch (IOException e) {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
-            } finally {
+            } 
+            finally {
                 if (socket != null) {
                     if (socket.isConnected()) {
                         try {

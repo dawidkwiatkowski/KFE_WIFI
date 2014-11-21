@@ -1,5 +1,7 @@
 package com.app.kfe.rysowanie;
 
+import com.app.kfe.R;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -9,6 +11,7 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 public class PaintView extends View {
 	
@@ -120,6 +123,21 @@ public class PaintView extends View {
 		canvasPaint.setStrokeCap(Paint.Cap.ROUND);
 		
 		mCurrentShape = SMOOTHLINE;
+	}
+	
+	public void odbieraj(Bitmap bm)
+	{
+		Bitmap workingBitmap = Bitmap.createBitmap(bm);
+		Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		//drawCanvas = new Canvas(mutableBitmap);
+		//drawCanvas.setBitmap(mutableBitmap);
+		//canvas.drawBitmap(myBitmap, 0, 0, null);
+		drawCanvas.drawBitmap(mutableBitmap, 0, 0,null);
+		invalidate();
+		
+		
+		
+		
 	}
 	
 	@Override

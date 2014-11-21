@@ -52,7 +52,7 @@ import android.widget.Toast;
 
 public class Tablica extends Activity implements OnSeekBarChangeListener, OnClickListener, ChannelListener, DeviceActionListener {
 	
-	private PaintView paintView;
+	static PaintView paintView;
 	private Button yellowButton;
 	private Button greenButton;
 	private Button blueButton;

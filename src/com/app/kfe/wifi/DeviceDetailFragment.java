@@ -60,6 +60,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.UUID;
+import java.io.Serializable;
 
 
 /**
@@ -79,7 +80,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-       
+        
         
     }
 
@@ -425,7 +426,8 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 if(DeviceDetailFragment.bm == null)
                 	statusText.setText("null");
           
-//              Canvas canva = new Canvas(DeviceDetailFragment.bm);
+                DeviceDetailFragment.pv.odbieraj(bm);
+            //Canvas canva = new Canvas(DeviceDetailFragment.bm);
               //DeviceDetailFragment.pv.setDrawCanvas(canva);
               //DeviceDetailFragment.pv.invalidate();
                 	//DeviceDetailFragment.pv.setBitmapOnCanvas(DeviceDetailFragment.bm);
