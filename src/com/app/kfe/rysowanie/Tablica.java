@@ -365,6 +365,8 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 		
 	}
 	
+	
+	
 	public void saveImage(){
 		paintView.setDrawingCacheEnabled(true);
 		Bitmap stara = paintView.getDrawingCache();

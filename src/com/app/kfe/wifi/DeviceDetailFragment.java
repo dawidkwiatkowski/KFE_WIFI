@@ -33,6 +33,7 @@ import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,7 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.UUID;
 
 
 /**
@@ -68,19 +70,27 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
 
     protected static final int CHOOSE_FILE_RESULT_CODE = 20;
     private View mContentView = null;
+   
     private WifiP2pDevice device;
     private WifiP2pInfo info;
     ProgressDialog progressDialog = null;
-
+    static Bitmap bm = null;
+    public static PaintView pv;
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+       
+        
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+    	
+    	
+    	
         mContentView = inflater.inflate(R.layout.device_detail, null);
+        //pv = ((PaintView) getActivity().findViewById(R.id.drawing));
+        
         mContentView.findViewById(R.id.btn_connect).setOnClickListener(new View.OnClickListener() {
         
             @Override
@@ -137,7 +147,7 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                                info.groupOwnerAddress.getHostAddress());
                        serviceIntent.putExtra(FileTransferService.EXTRAS_GROUP_OWNER_PORT, 8988);
                        
-//                       PaintView pv = ((PaintView) getActivity().findViewById(R.id.drawing));
+//                      PaintView pv = ((PaintView) getActivity().findViewById(R.id.drawing));
 //                       
 //                       pv.setDrawingCacheEnabled(true);
 //                       Bitmap obrazek = pv.getDrawingCache();
@@ -383,12 +393,12 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
                 String result = "Przyjêto dane";
 //                copyFile(inputstream, new FileOutputStream(f));
                 
-                Bitmap bm = null;
+                
                 byte[] array = Tablica.convertInputStreamToByteArray(inputstream);
                 
-                bm = BitmapFactory.decodeByteArray(array , 0, array.length);
+                DeviceDetailFragment.bm = BitmapFactory.decodeByteArray(array , 0, array.length);
                 
-                if( bm != null)
+                if( DeviceDetailFragment.bm != null)
                 	result = "byle co";
                 serverSocket.close();
 //                return f.getAbsolutePath();
@@ -408,6 +418,18 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         protected void onPostExecute(String result) {
             if (!result.isEmpty()) {
                 statusText.setText("Otrzymany tekst - " + result);
+                
+                
+                
+                DeviceDetailFragment.pv = ((PaintView) Tablica.tablica.findViewById(R.id.drawing));
+                if(DeviceDetailFragment.bm == null)
+                	statusText.setText("null");
+          
+//              Canvas canva = new Canvas(DeviceDetailFragment.bm);
+              //DeviceDetailFragment.pv.setDrawCanvas(canva);
+              //DeviceDetailFragment.pv.invalidate();
+                	//DeviceDetailFragment.pv.setBitmapOnCanvas(DeviceDetailFragment.bm);
+               
 //                Intent intent = new Intent();
 //                intent.setAction(android.content.Intent.ACTION_VIEW);
 //                intent.setDataAndType(Uri.parse("file://" + result), "image/*");

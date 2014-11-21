@@ -26,7 +26,7 @@ public class PaintView extends View {
 	//drawing path
 	private Path drawPath;
 	//drawing and canvas paint
-	private Paint drawPaint, canvasPaint;
+	public static Paint drawPaint, canvasPaint;
 	//initial color
 	private int paintColor = Color.WHITE;
 	//canvas
@@ -53,6 +53,8 @@ public class PaintView extends View {
 		setupDrawing();
 	}
 	
+
+
 	public Tablica getTablica() {
 		return tablica;
 	}
@@ -389,6 +391,11 @@ public class PaintView extends View {
 		countTouch = 0;
 	    basexTriangle = 0;
 	    baseyTriangle = 0;
+	}
+	
+	public void setBitmapOnCanvas(Bitmap bitmap){
+		drawCanvas.setBitmap(bitmap);
+		invalidate();
 	}
 
 }
