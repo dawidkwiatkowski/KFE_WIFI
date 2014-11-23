@@ -402,6 +402,7 @@ public class PaintView extends View {
 	
 	public void newImage(){
 		drawCanvas.drawColor(paintColor, android.graphics.PorterDuff.Mode.CLEAR);
+		drawCanvas.drawColor(Color.WHITE);
 		invalidate();
 	}
 	
