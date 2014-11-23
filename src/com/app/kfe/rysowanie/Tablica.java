@@ -174,6 +174,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
             public void onDrawerClosed() {
             	handle2.setBackgroundResource(R.drawable.right);
             	paintView.setIsEnabled(true);
+            	
             }
         });
 		
@@ -231,6 +232,8 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	        atn_direct_enable = (ImageButton) findViewById(R.id.atn_direct_enable);
 	        atn_direct_discover.setOnClickListener(this);
 			atn_direct_enable.setOnClickListener(this);
+			
+			receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
 		
 		//koniec czêœci dla wifi
 			
@@ -492,7 +495,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	    @Override
 	    public void onResume() {
 	        super.onResume();
-	        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+//	        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
 	        registerReceiver(receiver, intentFilter);
 	        
 	        tablica = this;
@@ -501,7 +504,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	    @Override
 	    public void onPause() {
 	        super.onPause();
-	        unregisterReceiver(receiver);
+	        //unregisterReceiver(receiver);
 	        
 	        tablica = null;
 	    }

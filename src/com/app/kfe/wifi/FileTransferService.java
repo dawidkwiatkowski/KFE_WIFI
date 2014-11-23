@@ -32,7 +32,7 @@ import com.app.kfe.rysowanie.Tablica;
  */
 public class FileTransferService extends IntentService {
 
-    private static final int SOCKET_TIMEOUT = 10000;
+    private static final int SOCKET_TIMEOUT = 100000;
     public static final String EXTRAS_CANVAS = "CANVAS";
     public static final String ACTION_SEND_FILE = "com.app.kfe.Wifi.SEND_FILE";
     public static final String ACTION_SEND_TEXT = "com.app.kfe.Wifi.SEND_TEXT";
@@ -40,7 +40,6 @@ public class FileTransferService extends IntentService {
     public static final String EXTRAS_FILE_PATH = "file_url";
     public static final String EXTRAS_GROUP_OWNER_ADDRESS = "go_host";
     public static final String EXTRAS_GROUP_OWNER_PORT = "go_port";
-    static Socket socket;
     static Boolean czy_tak=false;
     public FileTransferService(String name) {
         super(name);
@@ -67,8 +66,8 @@ public class FileTransferService extends IntentService {
 
             try {
                 Log.d(WiFiDirectActivity.TAG, "Opening client socket - ");
-                socket.bind(null);
-                socket.connect((new InetSocketAddress(host, port)), SOCKET_TIMEOUT);
+//                socket.bind(null);
+//                socket.connect((new InetSocketAddress(host, port)), SOCKET_TIMEOUT);
 
                 Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
                 OutputStream stream = socket.getOutputStream();
@@ -133,65 +132,47 @@ public class FileTransferService extends IntentService {
             }
         }
         else if (intent.getAction().equals(ACTION_SEND_CANVAS)) {
-        	String text = "Dupa";
+        	String text = "XXXXXX";
             String host = intent.getExtras().getString(EXTRAS_GROUP_OWNER_ADDRESS);
             
-            int port = intent.getExtras().getInt(EXTRAS_GROUP_OWNER_PORT);
-            
-//            byte[] canvasInByte = intent.getExtras().getByteArray(EXTRAS_CANVAS);
-            PaintView pv = ((PaintView) Tablica.tablica.findViewById(R.id.drawing));
-            Canvas canvas = null;
-            
-            canvas = pv.getDrawCanvas();
-//         
-//          
-          pv.setDrawingCacheEnabled(true);
-          Bitmap obrazek = pv.getDrawingCache();
-          
-          ByteArrayOutputStream streamOut = new ByteArrayOutputStream();
-          obrazek.compress(Bitmap.CompressFormat.PNG, 100, streamOut);
-  		 byte[] yourBytes = streamOut.toByteArray();
-          
-          
-          
-          pv.destroyDrawingCache();
-
-//          byte[] yourBytes = null;
-//          
-//          int bytes = obrazek.getByteCount();
-//
-//
-//			 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
-//			 obrazek.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
-//			 yourBytes = buffer.array(); //Get the underlying array containing the data.
-          	
-          	     socket = new Socket();
-          	     
-          	
-            
-            if( canvas != null)
-            	text = "Dostano kanwe";
-            else
-            	text = "kanva = null";
-
+            int port = intent.getExtras().getInt(EXTRAS_GROUP_OWNER_PORT); 
+            Socket socket = null;
             try {
+            	socket = new Socket();
+            
                 Log.d(WiFiDirectActivity.TAG, "Opening client socket - ");
-                if(!socket.isConnected())
-                {
-                	socket.bind(null);
-                	socket.connect((new InetSocketAddress(host, port)),SOCKET_TIMEOUT);
-                }
-               
+
+                socket.bind(null);
+            	socket.connect((new InetSocketAddress(host, port)),SOCKET_TIMEOUT);
+            	
+                PaintView pv = ((PaintView) Tablica.tablica.findViewById(R.id.drawing));
+                Canvas canvas = null;
+                
+                canvas = pv.getDrawCanvas();
+            
+    			  pv.setDrawingCacheEnabled(true);
+    			  Bitmap obrazek = pv.getDrawingCache();
+    			  
+    			  ByteArrayOutputStream streamOut = new ByteArrayOutputStream();
+    			  obrazek.compress(Bitmap.CompressFormat.PNG, 100, streamOut);
+    			  byte[] yourBytes = streamOut.toByteArray();
+    			  pv.destroyDrawingCache();
+
+                if( canvas != null)
+                	text = "Dostano kanwe";
+                else
+                	text = "kanva = null";
+
 
                 Log.d(WiFiDirectActivity.TAG, "Client socket - " + socket.isConnected());
                 OutputStream stream = socket.getOutputStream();
-//                ContentResolver cr = context.getContentResolver();
                 InputStream is = null;
                 
                 is = new ByteArrayInputStream(yourBytes);
                 
                 DeviceDetailFragment.copyFile(is, stream);
                 Log.d(WiFiDirectActivity.TAG, "Client: Data written");
+                
             } catch (IOException e) {
                 Log.e(WiFiDirectActivity.TAG, e.getMessage());
             } 
