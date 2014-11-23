@@ -20,6 +20,7 @@ import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pDeviceList;
@@ -204,6 +205,10 @@ public class DeviceListFragment extends ListFragment implements PeerListListener
         void connect(WifiP2pConfig config);
 
         void disconnect();
+
+		void onReceive();
+
+		void onReceive(Context context, Intent intent);
     }
 
 }

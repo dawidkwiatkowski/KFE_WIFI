@@ -86,9 +86,9 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	    private boolean isWifiP2pEnabled = false;
 	    private boolean retryChannel = false;
 	
-	    private final IntentFilter intentFilter = new IntentFilter();
+	    static public final IntentFilter intentFilter = new IntentFilter();
 	    private Channel channel;
-	    private BroadcastReceiver receiver = null;
+	    static public BroadcastReceiver receiver = null;
 	
 	//koniec czêœci dla WIFI
 
@@ -233,13 +233,15 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	        atn_direct_discover.setOnClickListener(this);
 			atn_direct_enable.setOnClickListener(this);
 			
-			receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+			//receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
 		
 		//koniec czêœci dla wifi
 			
 		tablica = this;
 	}
 
+	
+	
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
@@ -495,7 +497,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	    @Override
 	    public void onResume() {
 	        super.onResume();
-//	        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
+	        receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
 	        registerReceiver(receiver, intentFilter);
 	        
 	        tablica = this;
@@ -504,7 +506,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	    @Override
 	    public void onPause() {
 	        super.onPause();
-	        //unregisterReceiver(receiver);
+	        unregisterReceiver(receiver);
 	        
 	        tablica = null;
 	    }
@@ -626,6 +628,22 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	        }
 
 	    }
+
+
+
+		@Override
+		public void onReceive() {
+			// TODO Auto-generated method stub
+			registerReceiver(receiver, intentFilter);
+		}
+
+
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			
+		}
 		
 	//koniec czêœci dla WIFI
 

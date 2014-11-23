@@ -268,4 +268,16 @@ public class WiFiDirectActivity extends Activity implements ChannelListener, Dev
         }
 
     }
+
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onReceive() {
+		// TODO Auto-generated method stub
+		
+	}
 }

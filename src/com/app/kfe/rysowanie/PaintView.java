@@ -2,12 +2,15 @@ package com.app.kfe.rysowanie;
 
 import com.app.kfe.R;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.net.wifi.p2p.WifiP2pManager.Channel;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +24,8 @@ public class PaintView extends View {
 	 public static final int CIRCLE = 5;
 	 public static final int TRIANGLE = 6;
 	 public static final int SMOOTHLINE = 2;
-	 
+	 private IntentFilter intentFilter = new IntentFilter();
+	 private BroadcastReceiver receiver = null;
 	 public int mCurrentShape;
 	 
 	 public boolean isDrawing = false;
@@ -132,12 +136,12 @@ public class PaintView extends View {
 		//drawCanvas = new Canvas(mutableBitmap);
 		//drawCanvas.setBitmap(mutableBitmap);
 		//canvas.drawBitmap(myBitmap, 0, 0, null);
+		receiver=Tablica.tablica.receiver;
+		intentFilter=Tablica.tablica.intentFilter;
 		drawCanvas.drawBitmap(mutableBitmap, 0, 0,null);
 		invalidate();
-		
-		
-		
-		
+		Tablica.tablica.registerReceiver(receiver, intentFilter);
+			
 	}
 	
 	@Override
