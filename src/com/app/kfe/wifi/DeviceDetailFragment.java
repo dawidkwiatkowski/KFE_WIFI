@@ -40,6 +40,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.kfe.R;
@@ -73,12 +74,12 @@ import java.io.Serializable;
 public class DeviceDetailFragment extends Fragment implements ConnectionInfoListener {
 
     protected static final int CHOOSE_FILE_RESULT_CODE = 20;
-    private View mContentView = null;
+    static public View mContentView = null;
    
     private WifiP2pDevice device;
     private WifiP2pInfo info;
     ProgressDialog progressDialog = null;
-    static Bitmap bm = null;
+    public static Bitmap bm = null;
     public static PaintView pv;
     public static Intent serviceIntent;
     public static Activity activity;
@@ -155,7 +156,10 @@ public class DeviceDetailFragment extends Fragment implements ConnectionInfoList
         return mContentView;
     }
     
-
+    public static void wykonaj()
+    {
+    	mContentView.findViewById(R.id.btn_start_client).performClick();
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
             	

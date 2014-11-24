@@ -73,7 +73,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	private AlertDialog.Builder saveDialog;
 	private AlertDialog.Builder newImageDialog;
 	private int brushColor;	
-	
+	static public boolean czy_polaczony=false;
 	public static Tablica tablica = null;
 	
 	//czêœæ dla WIFI
@@ -543,7 +543,8 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	            @Override
 	            public void onSuccess() {
 	                // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-	        
+	            	czy_polaczony=true;
+	            	
 	            	
 	            	
 	            }

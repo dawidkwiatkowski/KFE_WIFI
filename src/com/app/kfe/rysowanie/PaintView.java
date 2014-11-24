@@ -1,22 +1,57 @@
 package com.app.kfe.rysowanie;
 
-import com.app.kfe.R;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 
+import com.app.kfe.R;
+import com.app.kfe.wifi.DeviceDetailFragment;
+import com.app.kfe.wifi.FileTransferService;
+import com.app.kfe.wifi.WiFiDirectActivity;
+import com.app.kfe.wifi.DeviceDetailFragment.TextServerAsyncTask;
+import com.app.kfe.wifi.DeviceListFragment.DeviceActionListener;
+
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.net.Uri;
+import android.net.wifi.WpsInfo;
+import android.net.wifi.p2p.WifiP2pConfig;
+import android.net.wifi.p2p.WifiP2pDevice;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager.Channel;
+import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Environment;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-public class PaintView extends View {
+public class PaintView extends View  {
 	
 	 public static final int LINE = 1;
 	 public static final int RECTANGLE = 3;
@@ -27,10 +62,12 @@ public class PaintView extends View {
 	 private IntentFilter intentFilter = new IntentFilter();
 	 private BroadcastReceiver receiver = null;
 	 public int mCurrentShape;
-	 
+	 public static Intent serviceIntent;
+	 private WifiP2pInfo info;
 	 public boolean isDrawing = false;
-	
+	 static Bitmap bm = null;
 	//drawing path
+	 private boolean czy_narysowalem=false;
 	private Path drawPath;
 	//drawing and canvas paint
 	public static Paint drawPaint, canvasPaint;
@@ -152,30 +189,67 @@ public class PaintView extends View {
 		drawCanvas.drawColor(Color.WHITE);
 	}
 	
-	@Override
+	@SuppressLint("DrawAllocation") @Override
 	protected void onDraw(Canvas canvas) {
 		canvas.drawBitmap(canvasBitmap, 0, 0, canvasPaint);
 		//canvas.drawPath(drawPath, drawPaint);
-		
+		czy_narysowalem=true;
 		if (isDrawing){
 			switch (mCurrentShape) {
 				case LINE:
 					onDrawLine(canvas);
+					czy_narysowalem=true;
+					
 					break;
 				case RECTANGLE:
 					onDrawRectangle(canvas);
+					czy_narysowalem=true;
 					break;
 				case SQUARE:
 					onDrawSquare(canvas);
+					czy_narysowalem=true;
 					break;
 				case CIRCLE:
 					onDrawCircle(canvas);
+					czy_narysowalem=true;
 					break;
 				case TRIANGLE:
 					onDrawTriangle(canvas);
+					czy_narysowalem=true;
 					break;
 			}
-		}		
+			if(czy_narysowalem==true && isDrawing)
+				new CountDownTimer(5000,1000){
+
+	            @Override
+	            public void onTick(long miliseconds){}
+
+	            @Override
+	            public void onFinish(){
+	               //after 5 seconds draw the second line
+	            	przesylaj();
+	            }
+	        }.start();
+				
+			
+			
+		}
+//		if(czy_narysowalem=true && Tablica.czy_polaczony==false)
+//		{
+//			DeviceDetailFragment.wykonaj();
+//			czy_narysowalem=false;
+//		}
+			
+	
+	}
+	
+	void przesylaj()
+	{
+		if(czy_narysowalem==true && Tablica.czy_polaczony==false)
+			{
+				DeviceDetailFragment.wykonaj();
+				czy_narysowalem=false;
+			}
 	}
 	
 	@Override
@@ -238,7 +312,9 @@ public class PaintView extends View {
 	}
 	
 	private void onDrawLine(Canvas canvas) {
-        canvas.drawLine(mx, my, touchX, touchY, canvasPaint);        
+		czy_narysowalem=true;
+		canvas.drawLine(mx, my, touchX, touchY, canvasPaint);  
+      
     }
 	
 	private void onDrawCircle(Canvas canvas){
@@ -420,5 +496,5 @@ public class PaintView extends View {
 		drawCanvas.setBitmap(bitmap);
 		invalidate();
 	}
-
 }
+
