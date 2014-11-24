@@ -218,7 +218,7 @@ public class PaintView extends View  {
 					czy_narysowalem=true;
 					break;
 			}
-			if(czy_narysowalem==true && isDrawing)
+			if(czy_narysowalem==true && isDrawing && Tablica.czy_polaczony==true)
 				new CountDownTimer(5000,1000){
 
 	            @Override
@@ -318,10 +318,12 @@ public class PaintView extends View  {
     }
 	
 	private void onDrawCircle(Canvas canvas){
+		czy_narysowalem=true;
         canvas.drawCircle(mx, my, calculateRadius(mx, my, touchX, touchY), canvasPaint);
     }
 	
 	private void onDrawSquare(Canvas canvas) {
+		czy_narysowalem=true;
         onDrawRectangle(canvas);
     }
 	
@@ -330,7 +332,7 @@ public class PaintView extends View  {
     float baseyTriangle = 0;
 
     private void onDrawTriangle(Canvas canvas){
-
+    	czy_narysowalem=true;
         if (countTouch<3){
             canvas.drawLine(mx,my,touchX,touchY,canvasPaint);
         }else if (countTouch==3){
@@ -484,6 +486,19 @@ public class PaintView extends View  {
 		drawCanvas.drawColor(paintColor, android.graphics.PorterDuff.Mode.CLEAR);
 		drawCanvas.drawColor(Color.WHITE);
 		invalidate();
+		czy_narysowalem=true;
+		if(czy_narysowalem==true && Tablica.czy_polaczony==true)
+			new CountDownTimer(5000,1000){
+
+            @Override
+            public void onTick(long miliseconds){}
+
+            @Override
+            public void onFinish(){
+               //after 5 seconds draw the second line
+            	przesylaj();
+            }
+        }.start();
 	}
 	
 	public void resetTriangle(){

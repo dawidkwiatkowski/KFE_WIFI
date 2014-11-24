@@ -545,7 +545,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	                // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
 	            	
 	            	
-	            	
+	            	czy_polaczony=true;
 	            	
 	            }
 
@@ -562,6 +562,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	        final DeviceDetailFragment fragment = (DeviceDetailFragment) getFragmentManager()
 	                .findFragmentById(R.id.frag_detail);
 	        fragment.resetViews();
+	        czy_polaczony=false;
 	        manager.removeGroup(channel, new ActionListener() {
 
 	            @Override
