@@ -1,55 +1,23 @@
 package com.app.kfe.rysowanie;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-import com.app.kfe.R;
-import com.app.kfe.wifi.DeviceDetailFragment;
-import com.app.kfe.wifi.FileTransferService;
-import com.app.kfe.wifi.WiFiDirectActivity;
-import com.app.kfe.wifi.DeviceDetailFragment.TextServerAsyncTask;
-import com.app.kfe.wifi.DeviceListFragment.DeviceActionListener;
-
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.net.Uri;
-import android.net.wifi.WpsInfo;
-import android.net.wifi.p2p.WifiP2pConfig;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pInfo;
-import android.net.wifi.p2p.WifiP2pManager.Channel;
-import android.net.wifi.p2p.WifiP2pManager.ConnectionInfoListener;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import com.app.kfe.wifi.DeviceDetailFragment;
 
 public class PaintView extends View  {
 	
@@ -65,7 +33,11 @@ public class PaintView extends View  {
 	 public static Intent serviceIntent;
 	 private WifiP2pInfo info;
 	 public boolean isDrawing = false;
-	 static Bitmap bm = null;
+	 public static Bitmap bm = null;
+	 
+	 public static int canvasHeight;
+	 public static int canvasWidth;
+	 
 	//drawing path
 	 private boolean czy_narysowalem=false;
 	private Path drawPath;
@@ -169,17 +141,39 @@ public class PaintView extends View  {
 	public void odbieraj(Bitmap bm)
 	{
 		Bitmap workingBitmap = Bitmap.createBitmap(bm);
+		workingBitmap = getResizedBitmap(workingBitmap,canvasHeight,canvasWidth);
+		
 		Bitmap mutableBitmap = workingBitmap.copy(Bitmap.Config.ARGB_8888, true);
 		//drawCanvas = new Canvas(mutableBitmap);
 		//drawCanvas.setBitmap(mutableBitmap);
 		//canvas.drawBitmap(myBitmap, 0, 0, null);
 		receiver=Tablica.tablica.receiver;
 		intentFilter=Tablica.tablica.intentFilter;
+		
 		drawCanvas.drawBitmap(mutableBitmap, 0, 0,null);
 		invalidate();
 		Tablica.tablica.registerReceiver(receiver, intentFilter);
 			
 	}
+	
+
+
+	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+	    int width = bm.getWidth();
+	    int height = bm.getHeight();
+	    float scaleWidth = ((float) newWidth) / width;
+	    float scaleHeight = ((float) newHeight) / height;
+	    // CREATE A MATRIX FOR THE MANIPULATION
+	    Matrix matrix = new Matrix();
+	    // RESIZE THE BIT MAP
+	    matrix.postScale(scaleWidth, scaleHeight);
+	
+	    // "RECREATE" THE NEW BITMAP
+	    Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+	    return resizedBitmap;
+	}
+
+
 	
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -187,6 +181,8 @@ public class PaintView extends View  {
 		canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
 		drawCanvas = new Canvas(canvasBitmap);
 		drawCanvas.drawColor(Color.WHITE);
+		canvasHeight = h;
+		canvasWidth = w;
 	}
 	
 	@SuppressLint("DrawAllocation") @Override
@@ -218,8 +214,8 @@ public class PaintView extends View  {
 					czy_narysowalem=true;
 					break;
 			}
-			if(czy_narysowalem==true && isDrawing && Tablica.czy_polaczony==true)
-				new CountDownTimer(5000,1000){
+			if(czy_narysowalem && isDrawing  && Tablica.czy_polaczony)
+				new CountDownTimer(1000,500){
 
 	            @Override
 	            public void onTick(long miliseconds){}
@@ -245,10 +241,15 @@ public class PaintView extends View  {
 	
 	void przesylaj()
 	{
-		if(czy_narysowalem==true && Tablica.czy_polaczony==false)
+		if(czy_narysowalem && Tablica.czy_polaczony)
 			{
-				DeviceDetailFragment.wykonaj();
-				czy_narysowalem=false;
+				try{
+					DeviceDetailFragment.wykonaj();
+					czy_narysowalem=false;
+				}
+				catch(Exception e){
+					
+				}
 			}
 	}
 	
@@ -507,7 +508,7 @@ public class PaintView extends View  {
 	    baseyTriangle = 0;
 	}
 	
-	public void setBitmapOnCanvas(Bitmap bitmap){
+	public void setBitmapOnCanvas(Bitmap bitmap){		
 		drawCanvas.setBitmap(bitmap);
 		invalidate();
 	}

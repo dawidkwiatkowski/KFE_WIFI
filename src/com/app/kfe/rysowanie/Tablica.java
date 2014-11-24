@@ -376,25 +376,8 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 		paintView.setDrawingCacheEnabled(true);
 		Bitmap stara = paintView.getDrawingCache();
 		
-//		int bytes = stara.getByteCount();
-//
-//
-//		 ByteBuffer buffer = ByteBuffer.allocate(bytes); //Create a new buffer
-//		 stara.copyPixelsToBuffer(buffer); //Move the byte data to the buffer
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		stara.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		 byte[] yourBytes = stream.toByteArray();
-		 
-		 InputStream is = null;
-         
-        
-        is = new ByteArrayInputStream(yourBytes);
-        byte[] array = convertInputStreamToByteArray(is);
-        
-		Bitmap nowa = BitmapFactory.decodeByteArray(array , 0, array.length);
-		
 		String imgSaved = MediaStore.Images.Media.insertImage(
-				getContentResolver(), nowa,
+				getContentResolver(), stara,
 				UUID.randomUUID().toString()+".png", "drawing");
 		
 		if(imgSaved != null){
