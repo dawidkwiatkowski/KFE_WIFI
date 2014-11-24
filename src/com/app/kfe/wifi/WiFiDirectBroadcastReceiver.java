@@ -95,7 +95,7 @@ public class WiFiDirectBroadcastReceiver extends BroadcastReceiver {
 
                 // we are connected with the other device, request connection
                 // info to find group owner IP
-
+            	Tablica.czy_polaczony=true;
                 DeviceDetailFragment fragment = (DeviceDetailFragment) activity
                         .getFragmentManager().findFragmentById(R.id.frag_detail);
                 manager.requestConnectionInfo(channel, fragment);

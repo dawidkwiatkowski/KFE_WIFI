@@ -543,7 +543,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	            @Override
 	            public void onSuccess() {
 	                // WiFiDirectBroadcastReceiver will notify us. Ignore for now.
-	            	czy_polaczony=true;
+	            	
 	            	
 	            	
 	            	
