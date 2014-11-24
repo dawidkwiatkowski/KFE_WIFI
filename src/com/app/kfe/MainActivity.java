@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -95,8 +96,10 @@ public class MainActivity extends Activity {
 				if(mpButtonClick != null && silent){
 					mpButtonClick.start();
 					}
-				Intent dolacz = new Intent(getApplicationContext(), com.app.kfe.wifi.WiFiDirectActivity.class);
-				startActivity(dolacz);
+//				Intent dolacz = new Intent(getApplicationContext(), com.app.kfe.wifi.WiFiDirectActivity.class);
+//				startActivity(dolacz);
+				Toast.makeText(MainActivity.this, "Funkcja jeszcze nie obs³ugiwana",
+                        Toast.LENGTH_SHORT).show();
 			}	
     	
     	});
