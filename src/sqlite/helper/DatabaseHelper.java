@@ -178,6 +178,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		return hasla;
 	}
 	
+	public void addHaslo(String keyString) {
+		SQLiteDatabase db = this.getWritableDatabase();
+		String query = String.format("SELECT %s FROM %s WHERE %s='%s'", KEY_ID, HASLA_TABLE, KEY_HASLO, keyString);
+		if(db.rawQuery(query, null).getCount() > 0) {
+			
+		}
+		else {
+			//TODO: validate keyString
+			ContentValues values = new ContentValues();
+			values.put(KEY_HASLO, keyString);
+			db.insert(HASLA_TABLE, null, values);
+		}
+	}
+	
 	
 	public long createRozgrywka(Rozgrywka rozgrywka, long[] gracz_ids,int[] punkty) {
 		SQLiteDatabase db = this.getWritableDatabase();

@@ -35,7 +35,6 @@ import android.net.wifi.p2p.WifiP2pManager.ChannelListener;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -76,7 +75,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	static public boolean czy_polaczony=false;
 	public static Tablica tablica = null;
 	
-	//czêœæ dla WIFI
+	//czï¿½ï¿½ dla WIFI
 	
 		private ImageButton atn_direct_enable;
 		private ImageButton atn_direct_discover;
@@ -90,7 +89,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 	    private Channel channel;
 	    static public BroadcastReceiver receiver = null;
 	
-	//koniec czêœci dla WIFI
+	//koniec czï¿½ci dla WIFI
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -180,7 +179,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 		
 		saveDialog = new AlertDialog.Builder(this);
 		saveDialog.setTitle("Zapis obrazka");
-		saveDialog.setMessage("Czy zapisaæ obrazek do galerii?");
+		saveDialog.setMessage("Czy zapisaï¿½ obrazek do galerii?");
 		saveDialog.setPositiveButton("Tak", new DialogInterface.OnClickListener() {					
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -200,7 +199,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 		
 		newImageDialog = new AlertDialog.Builder(this);
 		newImageDialog.setTitle("Czyszczenie tablicy");
-		newImageDialog.setMessage("Czy czy wyczyœciæ tablicê?");
+		newImageDialog.setMessage("Czy czy wyczyï¿½ciï¿½ tablicï¿½?");
 		newImageDialog.setPositiveButton("Tak", new DialogInterface.OnClickListener() {					
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -218,7 +217,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 			}
 		});
 		
-		//czêœæ dla WIFI
+		//czï¿½ï¿½ dla WIFI
 			
 			intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
 	        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
@@ -235,7 +234,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 			
 			//receiver = new WiFiDirectBroadcastReceiver(manager, channel, this);
 		
-		//koniec czêœci dla wifi
+		//koniec czï¿½ci dla wifi
 			
 		tablica = this;
 	}
@@ -385,7 +384,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 			saveToast.show();
 		}
 		else{
-			Toast unsavedToast = Toast.makeText(getApplicationContext(), "Wyst¹pi³ problem podczas zapisu", Toast.LENGTH_SHORT);
+			Toast unsavedToast = Toast.makeText(getApplicationContext(), "Wystï¿½piï¿½ problem podczas zapisu", Toast.LENGTH_SHORT);
 			unsavedToast.show();
 		}
 		
@@ -467,7 +466,7 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 		paintView.newImage();
 	}
 	
-	//czêœæ dla WIFI
+	//czï¿½ï¿½ dla WIFI
 	
 		/**
 	     * @param isWifiP2pEnabled the isWifiP2pEnabled to set
@@ -630,6 +629,6 @@ public class Tablica extends Activity implements OnSeekBarChangeListener, OnClic
 			
 		}
 		
-	//koniec czêœci dla WIFI
+	//koniec czï¿½ci dla WIFI
 
 }

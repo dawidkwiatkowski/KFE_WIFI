@@ -1,20 +1,12 @@
 package com.app.kfe.baza_danych;
 
 
-import java.util.List;
-
-import com.app.kfe.R;
-import com.app.kfe.R.id;
-import com.app.kfe.R.layout;
-import com.app.kfe.R.menu;
-import com.app.kfe.R.raw;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,12 +15,24 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.app.kfe.R;
 import sqlite.helper.DatabaseHelper;
 import sqlite.model.Gracz;
-import android.util.Log;
+import sqlite.model.Haslo;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ustawienia extends Activity {
 	
+	private static final String LOG_TAG = "SettingsActivity";
 	private Button btn_save;
 	private EditText etName;
 	  private CheckBox radioDzwiek;
@@ -37,6 +41,33 @@ public class Ustawienia extends Activity {
 	 boolean silent;
 	 
 	DatabaseHelper db;
+
+	private class UpdateKeyStringDatabaseTask extends AsyncTask<URL, Integer, InputStream> {
+
+		@Override
+		protected InputStream doInBackground(URL... params) {
+			InputStream result = null;
+			try {
+				for(URL url : params) {
+					HttpURLConnection urlConnection = (HttpURLConnection)(url.openConnection());
+					result = urlConnection.getInputStream();
+				}
+			}
+			catch (IOException ioe) {}
+			return result;
+		}
+
+		@Override
+		protected void onPostExecute(InputStream inputStream) {
+			try {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+				String line;
+				while((line = reader.readLine()) != null) {
+					db.addHaslo(line);
+                }
+			} catch (IOException e) {}
+		}
+	}
 	
 
     @Override
@@ -76,20 +107,30 @@ public class Ustawienia extends Activity {
 	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.ustawienia, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    	boolean result = super.onOptionsItemSelected(item);
+    	switch(item.getItemId()) {
+    	case R.id.action_update_keystring_database:
+			try {
+				URL url = new URL("https://raw.githubusercontent.com/dawidkwiatkowski/KFE_WIFI/master/123.txt");
+				new UpdateKeyStringDatabaseTask().execute(url);
+			}
+			catch (MalformedURLException mue){}
+    		break;
+    		
+    	case R.id.action_show_keystring_database:
+    		ArrayList<Haslo> keyStrings = db.getAllHasla();
+    		for(Haslo keyString : keyStrings) {
+    			Log.d(LOG_TAG, keyString.getHaslo());
+    		}
+    		break;
+    	}
+    	return result;
     }
     
     
@@ -130,7 +171,7 @@ public class Ustawienia extends Activity {
 					for (Gracz gracz : db.getAllGracze()) {
 						if(nazwa_gracza.equals(gracz.getName())){
 							
-							 Toast.makeText(getBaseContext(),"Gracz "+ nazwa_gracza +" " +"istnieje ju¿ w bazie ", Toast.LENGTH_LONG).show();
+							 Toast.makeText(getBaseContext(),"Gracz "+ nazwa_gracza +" " +"istnieje juï¿½ w bazie ", Toast.LENGTH_LONG).show();
 							 i++;
 							 break;
 						}
@@ -138,16 +179,16 @@ public class Ustawienia extends Activity {
 					if(i==0){
 					Gracz player = new Gracz(nazwa_gracza);
 					db.createGracz(player);
-					 Toast.makeText(getBaseContext(),"Gracz zosta³ zapisany", Toast.LENGTH_LONG).show();}
-											
+					 Toast.makeText(getBaseContext(),"Gracz zostaï¿½ zapisany", Toast.LENGTH_LONG).show();}
+
 				}
 				db.closeDB();
 			}
-    	
+
     	});
-    	
-    	
-    	
+
+
+
 	}
     
 }

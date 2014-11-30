@@ -72,5 +72,6 @@
     <string name="label_peers">PEERS</string>
     <string name="title_activity_wifi_act">Wifi_act</string>
     <string name="title_activity_temp">Temp</string>
+    <string name="MenuEntry_UpdateKeyStringDatabase">Update keystrings database</string>
 
 </resources>
