@@ -11,6 +11,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ProtocolException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -179,16 +180,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	}
 	
 	public void addHaslo(String keyString) {
-		SQLiteDatabase db = this.getWritableDatabase();
-		String query = String.format("SELECT %s FROM %s WHERE %s='%s'", KEY_ID, HASLA_TABLE, KEY_HASLO, keyString);
-		if(db.rawQuery(query, null).getCount() > 0) {
-			
+		if(keyString != null && !keyString.isEmpty()) {
+			SQLiteDatabase db = this.getWritableDatabase();
+			String query = String.format("SELECT %s FROM %s WHERE %s='%s'", KEY_ID, HASLA_TABLE, KEY_HASLO, keyString);
+			if (db.rawQuery(query, null).getCount() > 0) {
+				Log.w(LOG, String.format("KeyString \"%s\" exists in database! Skipping", keyString));
+			} else {
+				//TODO: validate keyString
+				ContentValues values = new ContentValues();
+				values.put(KEY_HASLO, keyString);
+				db.insert(HASLA_TABLE, null, values);
+			}
 		}
 		else {
-			//TODO: validate keyString
-			ContentValues values = new ContentValues();
-			values.put(KEY_HASLO, keyString);
-			db.insert(HASLA_TABLE, null, values);
+			Log.w(LOG, "KeyString shouldn't be empty!");
 		}
 	}
 	
